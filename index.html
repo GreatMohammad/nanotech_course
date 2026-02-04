@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Intro to Nanotechnology: Interactive Classroom</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            scroll-behavior: smooth;
+        }
+
+        .gradient-bg {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+        }
+
+        .nano-card {
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .nano-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+            border-color: #3b82f6;
+        }
+
+        .scale-slider {
+            -webkit-appearance: none;
+            width: 100%;
+            height: 8px;
+            border-radius: 5px;
+            background: #334155;
+            outline: none;
+        }
+
+        .scale-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: #3b82f6;
+            cursor: pointer;
+            border: 3px solid #fff;
+        }
+
+        .quiz-option {
+            transition: all 0.2s;
+        }
+
+        .quiz-option:hover {
+            background: #f1f5f9;
+            padding-left: 2rem;
+        }
+
+        .tab-active {
+            border-bottom: 3px solid #3b82f6;
+            color: #3b82f6;
+        }
+
+        /* AFM Simulation Animation */
+        @keyframes sweep {
+            0% { left: 10%; }
+            50% { left: 90%; }
+            100% { left: 10%; }
+        }
+        .afm-probe {
+            animation: sweep 4s infinite ease-in-out;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-900">
+
+    <!-- Header -->
+    <header class="gradient-bg text-white py-12 px-6 shadow-xl">
+        <div class="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between">
+            <div class="mb-8 md:mb-0">
+                <h1 class="text-4xl md:text-5xl font-extrabold tracking-tight mb-2">Introduction to Nanotechnology</h1>
+                <p class="text-slate-400 text-lg">Unlocking the secrets of matter at the $10^{-9}$ scale.</p>
+            </div>
+            <div class="bg-blue-600/20 p-4 rounded-xl border border-blue-500/30 backdrop-blur-sm">
+                <span class="text-blue-400 font-mono text-sm uppercase tracking-widest">Course Module 01</span>
+                <div class="text-2xl font-bold">2-Hour Class Guide</div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Navigation -->
+    <nav class="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-slate-200">
+        <div class="max-w-6xl mx-auto px-6 overflow-x-auto">
+            <div class="flex space-x-8 py-4 whitespace-nowrap">
+                <button onclick="navTo('intro')" id="btn-intro" class="font-semibold transition-colors">0. The Scale</button>
+                <button onclick="navTo('physics')" id="btn-physics" class="font-semibold transition-colors">1. Why is it Different?</button>
+                <button onclick="navTo('methods')" id="btn-methods" class="font-semibold transition-colors">2. How it's Made</button>
+                <button onclick="navTo('tools')" id="btn-tools" class="font-semibold transition-colors">3. How we See</button>
+                <button onclick="navTo('quiz')" id="btn-quiz" class="font-semibold transition-colors">4. Quiz</button>
+            </div>
+        </div>
+    </nav>
+
+    <main class="max-w-5xl mx-auto px-6 py-12">
+
+        <!-- Intro Section: The Scale -->
+        <section id="sec-intro" class="space-y-8">
+            <div class="bg-white p-8 rounded-2xl shadow-sm border border-slate-200">
+                <h2 class="text-3xl font-bold mb-4">How Small is a Nanometer?</h2>
+                <p class="text-slate-600 mb-8">Nanotechnology involves materials between 1 and 100 nanometers. To understand this, let's explore the orders of magnitude.</p>
+                
+                <div class="bg-slate-50 p-10 rounded-xl text-center">
+                    <div id="scale-display" class="mb-6">
+                        <span id="scale-value" class="text-5xl font-black text-blue-600">1.0 m</span>
+                        <div id="scale-object" class="text-xl font-medium mt-2 text-slate-500 italic">Human Height</div>
+                    </div>
+                    <input type="range" min="0" max="9" step="1" value="0" id="nano-slider" class="scale-slider">
+                    <div class="flex justify-between mt-4 text-xs font-bold text-slate-400 uppercase tracking-tighter">
+                        <span>Meter</span>
+                        <span>Millimeter</span>
+                        <span>Micrometer</span>
+                        <span>Nanometer</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Physics Section: Uniqueness -->
+        <section id="sec-physics" class="hidden space-y-8">
+            <h2 class="text-3xl font-bold">The Physics of Nano</h2>
+            <div class="grid md:grid-cols-2 gap-8">
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 nano-card">
+                    <div class="h-12 w-12 bg-indigo-100 rounded-lg flex items-center justify-center mb-4">
+                        <svg class="w-6 h-6 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" /></svg>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">Surface Area Dominance</h3>
+                    <p class="text-slate-600">As size decreases, the percentage of atoms on the surface increases drastically. This makes nanomaterials incredibly reactive (e.g., gold becomes a catalyst).</p>
+                    <div class="mt-4 p-4 bg-slate-50 rounded italic text-sm">
+                        "If you divide a cube 1cm into 1nm cubes, the total surface area goes from 6 cm² to 6,000 m²!"
+                    </div>
+                </div>
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 nano-card">
+                    <div class="h-12 w-12 bg-purple-100 rounded-lg flex items-center justify-center mb-4">
+                        <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">Quantum Effects</h3>
+                    <p class="text-slate-600">At this scale, the electronic properties are governed by quantum mechanics. Materials change color, conductivity, and magnetism (e.g., Quantum Dots).</p>
+                    <div class="mt-4 p-4 bg-slate-50 rounded italic text-sm">
+                        "Electrons are restricted in motion, leading to discrete energy levels."
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Methods Section: Approaches -->
+        <section id="sec-methods" class="hidden space-y-8">
+            <h2 class="text-3xl font-bold">Fabrication Strategies</h2>
+            <div class="grid md:grid-cols-2 gap-8">
+                <div class="bg-white p-8 rounded-2xl shadow-sm border-l-4 border-blue-500">
+                    <h3 class="text-xl font-bold mb-4">1. Top-Down Approach</h3>
+                    <p class="text-slate-600 mb-4">Start with a bulk material and remove parts until you reach the desired shape. Think of a sculptor carving a statue.</p>
+                    <ul class="space-y-2 text-sm text-slate-500">
+                        <li class="flex items-center"><span class="mr-2 text-blue-500">•</span> Photolithography (Microchips)</li>
+                        <li class="flex items-center"><span class="mr-2 text-blue-500">•</span> Mechanical Milling</li>
+                        <li class="flex items-center"><span class="mr-2 text-blue-500">•</span> Chemical Etching</li>
+                    </ul>
+                </div>
+                <div class="bg-white p-8 rounded-2xl shadow-sm border-l-4 border-emerald-500">
+                    <h3 class="text-xl font-bold mb-4">2. Bottom-Up Approach</h3>
+                    <p class="text-slate-600 mb-4">Building complex structures atom-by-atom or molecule-by-molecule. This is how nature builds life.</p>
+                    <ul class="space-y-2 text-sm text-slate-500">
+                        <li class="flex items-center"><span class="mr-2 text-emerald-500">•</span> Molecular Self-Assembly</li>
+                        <li class="flex items-center"><span class="mr-2 text-emerald-500">•</span> Chemical Vapor Deposition</li>
+                        <li class="flex items-center"><span class="mr-2 text-emerald-500">•</span> DNA Origami</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Tools Section: Characterization -->
+        <section id="sec-tools" class="hidden space-y-8">
+            <h2 class="text-3xl font-bold">Characterization: "Feeling" the Atoms</h2>
+            <div class="bg-slate-900 p-8 rounded-2xl text-white relative overflow-hidden">
+                <h3 class="text-xl font-bold mb-4">AFM Simulation (Atomic Force Microscopy)</h3>
+                <p class="text-slate-400 mb-8 text-sm">We use a tiny cantilever with a sharp tip. As the tip moves, forces (van der Waals) bend the cantilever, which we track with a laser.</p>
+                
+                <!-- Visual Sim -->
+                <div class="relative h-48 w-full border-b border-slate-700 mt-10">
+                    <!-- Surface -->
+                    <div class="absolute bottom-0 w-full flex items-end justify-center space-x-2">
+                        <div class="h-4 w-8 bg-slate-600 rounded-t-lg"></div>
+                        <div class="h-12 w-8 bg-blue-500 rounded-t-lg"></div>
+                        <div class="h-6 w-8 bg-slate-600 rounded-t-lg"></div>
+                        <div class="h-16 w-8 bg-blue-400 rounded-t-lg"></div>
+                        <div class="h-4 w-8 bg-slate-600 rounded-t-lg"></div>
+                    </div>
+                    <!-- Probe -->
+                    <div class="afm-probe absolute bottom-20 w-12 h-12">
+                        <div class="w-1 h-20 bg-yellow-400 mx-auto"></div>
+                        <div class="w-4 h-4 bg-yellow-500 rotate-45 mx-auto -mt-2"></div>
+                    </div>
+                </div>
+                <div class="mt-4 text-center text-xs text-slate-500 uppercase font-bold tracking-widest">Scanning in progress...</div>
+            </div>
+        </section>
+
+        <!-- Quiz Section -->
+        <section id="sec-quiz" class="hidden space-y-8">
+            <div class="bg-white p-8 rounded-2xl shadow-md">
+                <h2 class="text-3xl font-bold mb-6">Class Check-in</h2>
+                <div id="quiz-box">
+                    <p id="q-text" class="text-xl mb-6 font-medium">Which of these is 1 billionth of a meter?</p>
+                    <div class="space-y-3">
+                        <button onclick="answer(0)" class="quiz-option w-full text-left p-4 rounded-xl border border-slate-200 hover:border-blue-400">Micrometer</button>
+                        <button onclick="answer(1)" class="quiz-option w-full text-left p-4 rounded-xl border border-slate-200 hover:border-blue-400">Nanometer</button>
+                        <button onclick="answer(2)" class="quiz-option w-full text-left p-4 rounded-xl border border-slate-200 hover:border-blue-400">Picometer</button>
+                    </div>
+                    <div id="quiz-feedback" class="mt-6 p-4 rounded-lg hidden"></div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-slate-100 py-12 border-t border-slate-200">
+        <div class="max-w-6xl mx-auto px-6 text-center text-slate-500 text-sm">
+            <p>© 2024 Interactive Nanotech Curriculum. Based on "Essentials in Nanoscience" by Kumar & Kumbhat.</p>
+        </div>
+    </footer>
+
+    <script>
+        // State Management
+        const sections = ['intro', 'physics', 'methods', 'tools', 'quiz'];
+        let currentQuizIndex = 0;
+
+        const quizData = [
+            {
+                q: "What is the standard range for 'Nano' materials?",
+                a: ["1 to 100 nm", "0.1 to 10 nm", "1 to 1000 nm"],
+                correct: 0
+            },
+            {
+                q: "Which microscopy technique uses 'Tunneling Current'?",
+                a: ["AFM", "Optical", "STM"],
+                correct: 2
+            },
+            {
+                q: "Photolithography is an example of which approach?",
+                a: ["Bottom-Up", "Top-Down", "Middle-Out"],
+                correct: 1
+            }
+        ];
+
+        // Navigation
+        function navTo(target) {
+            sections.forEach(s => {
+                document.getElementById(`sec-${s}`).classList.add('hidden');
+                document.getElementById(`btn-${s}`).classList.remove('tab-active');
+            });
+            document.getElementById(`sec-${target}`).classList.remove('hidden');
+            document.getElementById(`btn-${target}`).classList.add('tab-active');
+            window.scrollTo(0,0);
+        }
+
+        // Initialize first tab
+        navTo('intro');
+
+        // Scale Slider Logic
+        const slider = document.getElementById('nano-slider');
+        const scaleVal = document.getElementById('scale-value');
+        const scaleObj = document.getElementById('scale-object');
+
+        const scaleData = [
+            { label: "1.0 m", name: "Human Height" },
+            { label: "10 cm", name: "Apple Size" },
+            { label: "1.0 cm", name: "Sugar Cube" },
+            { label: "1.0 mm", name: "Grain of Sand" },
+            { label: "100 μm", name: "Human Hair Width" },
+            { label: "10 μm", name: "Red Blood Cell" },
+            { label: "1.0 μm", name: "Bacterium" },
+            { label: "100 nm", name: "The Nanoscale / Virus" },
+            { label: "2.5 nm", name: "DNA Diameter" },
+            { label: "0.1 nm", name: "Hydrogen Atom" }
+        ];
+
+        slider.addEventListener('input', (e) => {
+            const index = e.target.value;
+            scaleVal.innerText = scaleData[index].label;
+            scaleObj.innerText = scaleData[index].name;
+            
+            // Color shift logic for visuals
+            if (index >= 7) {
+                scaleVal.classList.replace('text-blue-600', 'text-emerald-600');
+            } else {
+                scaleVal.classList.add('text-blue-600');
+                scaleVal.classList.remove('text-emerald-600');
+            }
+        });
+
+        // Quiz Logic
+        function loadQuestion() {
+            const q = quizData[currentQuizIndex];
+            document.getElementById('q-text').innerText = q.q;
+            const options = document.querySelectorAll('.quiz-option');
+            options.forEach((btn, i) => {
+                btn.innerText = q.a[i];
+                btn.classList.remove('bg-green-100', 'bg-red-100', 'border-green-500', 'border-red-500');
+            });
+            document.getElementById('quiz-feedback').classList.add('hidden');
+        }
+
+        function answer(choice) {
+            const q = quizData[currentQuizIndex];
+            const feedback = document.getElementById('quiz-feedback');
+            feedback.classList.remove('hidden');
+
+            if(choice === q.correct) {
+                feedback.innerHTML = "<strong>Correct!</strong> Great job.";
+                feedback.className = "mt-6 p-4 rounded-lg bg-green-100 text-green-700 block";
+                
+                setTimeout(() => {
+                    currentQuizIndex = (currentQuizIndex + 1) % quizData.length;
+                    loadQuestion();
+                }, 2000);
+            } else {
+                feedback.innerHTML = "<strong>Not quite.</strong> Review the previous tabs and try again!";
+                feedback.className = "mt-6 p-4 rounded-lg bg-red-100 text-red-700 block";
+            }
+        }
+
+        // Initialize quiz
+        loadQuestion();
+    </script>
+</body>
+</html>
